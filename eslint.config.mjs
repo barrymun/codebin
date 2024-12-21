@@ -4,6 +4,8 @@ import jseslint from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
 
 const project = "./tsconfig.json";
 const compat = new FlatCompat({
@@ -26,6 +28,7 @@ export default tseslint.config(
       ...tseslint.configs.recommended,
       eslintPluginPrettierRecommended,
       ...compat.extends("plugin:import/typescript"),
+      reactPlugin.configs.flat.recommended,
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -33,6 +36,7 @@ export default tseslint.config(
       globals: globals.browser,
     },
     plugins: {
+      'react-hooks': reactHooksPlugin,
       import: legacyPlugin("eslint-plugin-import", "import"),
     },
     settings: {
@@ -44,6 +48,7 @@ export default tseslint.config(
       },
     },
     rules: {
+      ...reactHooksPlugin.configs.recommended.rules,
       "@typescript-eslint/no-empty-object-type": "off",
       "semi": ["error", "always"],
       "import/order": ["error", {
@@ -69,6 +74,7 @@ export default tseslint.config(
         "varsIgnorePattern": "^_",
         "caughtErrorsIgnorePattern": "^_"
       }],
+      "react/react-in-jsx-scope": "off",
     },
   },
 );
